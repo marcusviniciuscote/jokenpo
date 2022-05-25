@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 class Jogo extends StatefulWidget {
@@ -8,10 +10,55 @@ class Jogo extends StatefulWidget {
 }
 
 class _JogoState extends State<Jogo> {
-  var textResultado = [
-    'ganhou',
-    'perdeu',
-  ];
+  var imageApp = const AssetImage('images/padrao.png');
+  var mensagem = 'Escolha uma opção abaixo:';
+
+  void opcaoSelecionada(String escolhaUsuario) {
+    var opcoes = ['pedra', 'papel', 'tesoura'];
+    var numero = Random().nextInt(opcoes.length);
+    var escolhaApp = opcoes[numero];
+
+    //debugPrint('App: $escolhaApp');
+    //debugPrint('Usuário: $escolhaUsuario');
+
+    switch (escolhaApp) {
+      case 'pedra':
+        setState(() {
+          imageApp = const AssetImage('images/pedra.png');
+        });
+        break;
+      case 'papel':
+        setState(() {
+          imageApp = const AssetImage('images/papel.png');
+        });
+        break;
+      case 'tesoura':
+        setState(() {
+          imageApp = const AssetImage('images/tesoura.png');
+        });
+        break;
+      default:
+    }
+
+    if ((escolhaUsuario == 'pedra' && escolhaApp == 'tesoura') ||
+        (escolhaUsuario == 'papel' && escolhaApp == 'pedra') ||
+        (escolhaUsuario == 'tesoura' && escolhaApp == 'papel')) {
+      setState(() {
+        mensagem = 'Parabéns!!! Você ganhou :)';
+      });
+    } else if ((escolhaApp == 'pedra' && escolhaUsuario == 'tesoura') ||
+        (escolhaApp == 'papel' && escolhaUsuario == 'pedra') ||
+        (escolhaApp == 'tesoura' && escolhaUsuario == 'papel')) {
+      setState(() {
+        mensagem = 'Você perdeu :(';
+      });
+    } else {
+      setState(() {
+        mensagem = 'Empate...';
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,24 +79,14 @@ class _JogoState extends State<Jogo> {
               ),
             ),
           ),
-          GestureDetector(
-            onTap: () {
-              debugPrint('Imagem clicada!');
-            },
-            onDoubleTap: () {
-              debugPrint('Dois cliques Imagem clicada!');
-            },
-            onLongPress: () {
-              debugPrint('Longo clique Imagem clicada!');
-            },
-            child: Image.asset('images/padrao.png'),
-          ),
-          const Padding(
-            padding: EdgeInsets.only(top: 32, bottom: 16),
+          //Image.asset('images/padrao.png'),
+          Image(image: imageApp),
+          Padding(
+            padding: const EdgeInsets.only(top: 32, bottom: 16),
             child: Text(
-              'Escolha uma opção abaixo:',
+              mensagem,
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
@@ -58,7 +95,28 @@ class _JogoState extends State<Jogo> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Image.asset(
+              GestureDetector(
+                onTap: () => opcaoSelecionada("pedra"),
+                child: Image.asset(
+                  'images/pedra.png',
+                  height: 95,
+                ),
+              ),
+              GestureDetector(
+                onTap: () => opcaoSelecionada("papel"),
+                child: Image.asset(
+                  'images/papel.png',
+                  height: 95,
+                ),
+              ),
+              GestureDetector(
+                onTap: () => opcaoSelecionada("tesoura"),
+                child: Image.asset(
+                  'images/tesoura.png',
+                  height: 95,
+                ),
+              ),
+              /*Image.asset(
                 'images/pedra.png',
                 height: 95,
               ),
@@ -69,7 +127,7 @@ class _JogoState extends State<Jogo> {
               Image.asset(
                 'images/tesoura.png',
                 height: 95,
-              ),
+              ),*/
             ],
           )
         ],
