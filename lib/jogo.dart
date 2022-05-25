@@ -32,13 +32,24 @@ class _JogoState extends State<Jogo> {
               ),
             ),
           ),
-          Image.asset('images/padrao.png'),
+          GestureDetector(
+            onTap: () {
+              debugPrint('Imagem clicada!');
+            },
+            onDoubleTap: () {
+              debugPrint('Dois cliques Imagem clicada!');
+            },
+            onLongPress: () {
+              debugPrint('Longo clique Imagem clicada!');
+            },
+            child: Image.asset('images/padrao.png'),
+          ),
           const Padding(
             padding: EdgeInsets.only(top: 32, bottom: 16),
             child: Text(
               'Escolha uma opção abaixo:',
               textAlign: TextAlign.center,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
